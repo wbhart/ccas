@@ -13,6 +13,15 @@ complexity and algorithms with optimal asymptotics, e.g. FFT style algorithms.
 Currently Toom-Cook and Lehmer GCD are not implemented. It is questionable
 whether these belong in a library focused on simplicity.
 
+File structure is as follows:
+
+   config.h - build options, e.g. whether asserts should be used
+   ccas.h - platform dependent defines and macros and type definitions
+   wide.h - routines for arithmetic involving double width integers
+   nn/ - routines for arithmetic of multiprecision natural numbers
+   fft/ - fast fourier transform convolution routines
+   rand/ - routines for generating random words
+
 Performance measurements suggest that with asserts turned on (see config.h)
 the code is approximately 5-10 times slower than GMP up to operations with
 a billion bits or so (where cache misses start to slow things down a lot).
