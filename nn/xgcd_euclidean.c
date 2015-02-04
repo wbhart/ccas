@@ -21,11 +21,10 @@ int_t xgcd_euclidean(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
    nn_t r2 = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
    nn_t p = (nn_t) TMP_ALLOC((n + 1)*sizeof(uint_t));
 
-   nn_copyi(r1, a, m);
    nn_copyi(r2, b, n);
 
    /* do first division */
-   nn_divrem(q, r1, r1, m, r2, n);
+   nn_divrem(q, r1, a, m, r2, n);
    m = n;
    n = nn_normalise(r1, n);
    nn_swap(r1, r2);
