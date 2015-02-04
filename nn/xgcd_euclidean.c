@@ -10,7 +10,6 @@ int_t xgcd_euclidean(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
 
    int sgn = -1;
    int_t un, vn, qn, pn;
-   uint_t cy;
    TMP_INIT;
 
    TMP_START;
