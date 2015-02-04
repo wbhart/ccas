@@ -69,7 +69,7 @@ int_t xgcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
       (*sn) = -(*sn);
    else
    {
-      nn_copyi(r, g, m);
+      nn_copyi(g, r, m);
       nn_copyi(u, s, *sn);
    }
 
