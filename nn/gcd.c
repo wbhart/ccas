@@ -23,7 +23,7 @@ int_t nn_gcd(nn_t g, nn_t a, int_t m, nn_t b, int_t n)
    nn_swap(r, g);
 
    /* a = bq + r; a = b; b = r; */
-   while (n)
+   while (n != 0)
    {
       nn_divrem(q, r, r, m, g, n);
       m = n;
