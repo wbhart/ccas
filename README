@@ -1,0 +1,24 @@
+CCAS v0.1
+---------
+
+A simple CAS written entirely in C.
+
+The aim of the library is to implement asymptotically fast algorithms, but not
+to do any insane optimisations. All the code is maximally readable, for
+teaching purposes.
+
+We try to have classical algorithms, algorithms with divide and conquer
+complexity and algorithms with optimal asymptotics, e.g. FFT style algorithms.
+
+Currently Toom-Cook and Lehmer GCD are not implemented. It is questionable
+whether these belong in a library focused on simplicity.
+
+Performance measurements suggest that with asserts turned on (see config.h)
+the code is approximately 5-10 times slower than GMP up to operations with
+a billion bits or so (where cache misses start to slow things down a lot).
+
+There are sure to be many bugs currently. There is no test code. Do not rely
+on this code for anything important.
+
+William Hart - 2015.
+
