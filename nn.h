@@ -257,6 +257,25 @@ void nn_mul_classical(nn_t r, nn_src_t a, int_t m, nn_src_t b, int_t n);
 void nn_divrem_classical_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
                                           nn_src_t d, int_t n, uint_t dinv);
 
+/**
+   Set g to the greatest common divisor of {a, m} and {b, n}. The length
+   of g in words is returned by the function. We require g to have space
+   for n words.
+   We require m >= n > 0.
+*/
+int_t nn_gcd(nn_t g, nn_t a, int_t m, nn_t b, int_t n);
+
+/**
+   Set g to the greatest common divisor of {a, m} and {b, n}. The length
+   of g in words is returned by the function.
+   We set {s, sn} to the cofactor of a in the expression g = a*s + b*t.
+   Note that sn may be less than zero.
+   We require m >= n > 0. No aliasing of g and s is allowed. We require
+   g and s to both have space for n words.
+*/
+int_t xgcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
+                                                        nn_src_t b, int_t n);
+
 /****************************************************************************
 
    Subquadratic algorithms
