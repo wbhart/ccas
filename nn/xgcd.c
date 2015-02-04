@@ -9,69 +9,71 @@ int_t xgcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
    CCAS_ASSERT(!NN_OVERLAP(g, n, s, n));
 
    int sgn = -1;
-   int_t un = 0, qn, pn;
+   int_t un, vn, qn, pn;
    uint_t cy;
    TMP_INIT;
 
    TMP_START;
    nn_t u = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
+   nn_t v = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
    nn_t q = (nn_t) TMP_ALLOC((m - n + 1)*sizeof(uint_t));
-   nn_t r = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
+   nn_t r1 = (nn_t) TMP_ALLOC(m*sizeof(uint_t));
+   nn_t r2 = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
    nn_t p = (nn_t) TMP_ALLOC((n + 1)*sizeof(uint_t));
 
-   nn_copyi(g, b, n);
-   nn_divrem(q, r, a, m, g, n);
+   nn_copyi(r1, a, m);
+   nn_copyi(r2, b, n);
+
+   /* do first division */
+   nn_divrem(q, r1, r1, m, r2, n);
    m = n;
-   n = nn_normalise(r, n);
-
-   nn_swap(g, r);
-
-   /* set s = 0, u = 1 */
-   nn_zero(s, n);
+   n = nn_normalise(r1, n);
+   nn_swap(r1, r2);
+   
+   /* set u = 0, v = 1 */
    nn_zero(u, n);
-   u[0] = 1;
-   (*sn) = 0;
+   nn_zero(v, n);
+   v[0] = 1;
+   un = 0;
+   vn = 1;
 
    while (n != 0)
    {
-      nn_divrem(q, r, r, m, g, n);
+      /* r1, r2 = r2, r1 - q*r2 */
+      nn_divrem(q, r1, r1, m, r2, n);
       qn = nn_normalise(q, m - n + 1);
       m = n;
-      n = nn_normalise(r, n);
-      nn_swap(g, r);
+      n = nn_normalise(r1, n);
+      nn_swap(r1, r2);
  
       /* 
-         set s, u = u, s - q*u
-         sign of u always opposite of that of s
-         (which alternates), thus s and u can be
+         set u, v = v, u - q*v
+         sign of u always opposite of that of v
+         (which alternates), thus u and v can be
          stored as monotonically increasing
-         nonnegative values 
+         nonnegative values
       */
-      if (un >= qn)
-         nn_mul(p, u, un, q, qn);
+      if (vn >= qn)
+         nn_mul(p, v, vn, q, qn);
       else
-         nn_mul(p, q, qn, u, un);
+         nn_mul(p, q, qn, v, vn);
 
-      pn = nn_normalise(p, qn + un);
+      pn = nn_normalise(p, qn + vn);
 
-      if (nn_add(s, p, pn, s, *sn))
-         s[pn++] = 1;
+      if (nn_add(u, p, pn, u, un))
+         u[pn++] = 1;
 
-      nn_swap(s, u);
-      (*sn) = un;
-      un = nn_normalise(u, pn);
+      nn_swap(u, v);
+      un = vn;
+      vn = nn_normalise(v, pn);
 
       sgn = -sgn;
    }
 
-   /* deal with swapping and sign of s */
-   if (sgn < 0)
-      (*sn) = -(*sn);
-   else
-   {
-      nn_copyi(g, r, m);
-      nn_copyi(u, s, *sn);
-   }
+   (*sn) = sgn < 0 ? un : -un;
+      
+   nn_copyi(g, r1, m);
+   nn_copyi(s, u, un);
 
    TMP_END;
 
