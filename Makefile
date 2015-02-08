@@ -1,6 +1,6 @@
 CC=gcc
 AR=ar
-CFLAGS=-O2 -std=gnu99 -fPIC
+CFLAGS=-g -std=gnu99 -fPIC
 INCS=-I$(CURDIR)
 LIBS=-L$(CURDIR)
 

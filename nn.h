@@ -303,7 +303,7 @@ void nn_divrem_divconquer_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
 											
 /****************************************************************************
 
-   FFT based algorithms
+   Asymptotically fast algorithms
    
 *****************************************************************************/
 
@@ -340,7 +340,82 @@ void nn_invert_pi1(nn_t x, nn_src_t d, int_t n, uint_t pi1);
 */
 void nn_divrem_newton_pi(nn_t q, uint_t cy, nn_t a, int_t m, 
                                               nn_src_t d, int_t n, nn_t dinv);
-										 
+											  
+/**
+   Compute a quotient {q, m - n + 1} and not too small remainder {r, n + 1}
+   of {a, m} by {b, n}. The remainder is guaranteed to be at least s words
+   in length (where s is required to be no less than n). The quotient is
+   chosen to be either the usual euclidean quotient or one less.
+*/
+void nn_ngcd_sdiv(nn_t q, nn_t r, nn_src_t a, int_t m,
+                                               nn_src_t b, int_t n, int_t s);
+											   
+/**
+   Return 1, 0, -1 depending whether the number of words in {a, m} - {b, n}
+   is greater than, equal to or less than s.
+   We require m >= n >= s > 0.
+*/
+int nn_ngcd_sdiv_cmp(nn_src_t a, int_t m, nn_src_t b, int_t n, int_t s);
+
+/**
+   Allocate memory for a 2x2 matrix of nn_t's with space for n words each.
+*/
+nn_t * nn_ngcd_mat_init(int_t n);
+
+/**
+   Free memory allocated for matrix M.
+*/
+void nn_ngcd_mat_clear(nn_t * M);
+
+/**
+   Set M to the identity matrix, and set mn to 1, the maximum size of entries
+   in M.
+*/
+void nn_ngcd_mat_identity(nn_t * M, int_t * mn);
+
+/**
+   Set the matrix M1 with entries no bigger then |m1| words to M2*M1 where
+   M2 is a matrix with entries no bigger than |m2| words. The top right and
+   bottom left entry of each matrix are implicitly negated and the signs
+   of m1 and m2 denote whether M1 and M2 respectively have been multiplied
+   implicitly by that sign.
+*/
+void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2);
+
+/**
+   Set T = ({a, m}, {b, n}) to T + M(c, d) where c = {a, p1} and d = {b, p1}.
+   The number of words of the final value of a is returned. The number of words
+   of b will be less than this. Leading words above that point will be zero.
+   The top right and bottom left entry of the matrix are implicitly negated and
+   the sign of mn denotes whether M has been multiplied implicitly by that
+   sign. The entries of M are assumed to have no more than |mn| words.
+*/   
+int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
+                                                 int_t p1, nn_t * M, int_t mn);
+											   
+/**
+   The matrix M is multiplied by [0, -1; -1, {q, qn}] on the left. The top
+   right and bottom left entry of the matrix M are implicitly negated and
+   the sign of mn denotes whether M has been multiplied implicitly by that
+   sign. The entries of M are assumed to have no more than |mn| words.
+*/
+void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn);
+
+/**
+   Half-gcd using the algorithm of Moller:
+   http://www.lysator.liu.se/~nisse/archive/S0025-5718-07-02017-0.pdf
+
+   Applies steps of the euclidean algorithm to {a, m} and {b, n} and
+   returns a matrix M of determinant 1 such that application of M to
+   (a, b)^T would result in the final (a, b). If s = m/2 + 1, the final
+   return values a and b will be such that a - b has at most s words. The
+   number of words of a is returned by the function, with b being no
+   larger than a. A bound on the coefficients in M is given by mn. We
+   require that n > s on input. The largest entries of M will not exceed
+   m - s < m/2 words.
+*/
+int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn);
+
 /****************************************************************************
 
    Tuned algorithms
