@@ -47,21 +47,12 @@ int_t nn_gcd_ngcd(nn_t g, nn_src_t a, int_t m, nn_src_t b, int_t n)
       {
          m = nn_ngcd_mat_apply(r1, m, r2, n, p1, M, mn);
          n = nn_normalise(r2, m);
-
       } else
       {
-         nn_ngcd_sdiv(q, r1, r1, m, r2, n, m/2 + 1);
+         nn_divrem(q, r1, r1, m, r2, n);
          nn_swap(r1, r2);
-         int_t m1 = n;
-         n = nn_normalise(r2, CCAS_MIN(m, n + 1));
-         m = m1;
-
-         /* ensure r1 != r2 */
-         if (m == n && nn_cmp(r1, r2, n) == 0)
-         {
-            n = 0;
-            break;
-         }
+         int_t m = n;
+         n = nn_normalise(r2, n);
       }
    }
  

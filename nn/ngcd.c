@@ -39,10 +39,21 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
       
          nn_swap(a, b);
          m1 = n;
-         n = nn_normalise(b, CCAS_MIN(m, n + 1));
+         /* sdiv remainder can be bigger than n words */
+	     n = nn_normalise(b, CCAS_MIN(m, n + 1));
          m = m1;
          sgn = -sgn;
          nn_ngcd_mat_update(M, mn, q, qn);
+		 
+		 /* special case, sdiv can leave m < n */
+	     if (m < n)
+	     {
+	        int_t t = m; m = n; n = t;
+		    nn_swap(a, b);
+		    nn_swap(M[0], M[2]);
+		    nn_swap(M[1], M[3]);
+		    sgn = -sgn;
+	     }
       }
    
       if (n > s + 2 && nn_ngcd_sdiv_cmp(a, m, b, n, s))
@@ -71,11 +82,22 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
       
       nn_swap(a, b);
       m1 = n;
-      n = nn_normalise(b, CCAS_MIN(m, n + 1));
+      /* sdiv remainder can be bigger than n words */
+	  n = nn_normalise(b, CCAS_MIN(m, n + 1));
       m = m1;
       sgn = -sgn;
 
       nn_ngcd_mat_update(M, mn, q, qn);
+	  
+	  /* special case, sdiv can leave m < n */
+	  if (m < n)
+	  {
+	     int_t t = m; m = n; n = t;
+		 nn_swap(a, b);
+		 nn_swap(M[0], M[2]);
+		 nn_swap(M[1], M[3]);
+		 sgn = -sgn;
+	  }
    }
 
    /* a and b have been swapped, so unswap */
