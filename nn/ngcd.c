@@ -12,7 +12,7 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
    TMP_START;
    nn_t q = (nn_t) TMP_ALLOC(m*sizeof(uint_t));
    int_t m1, qn;
-   int sgn = 1, flag;
+   int sgn = 1;
 
    nn_t * M1;
    int_t mn1, s = m/2 + 1;
