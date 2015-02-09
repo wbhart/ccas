@@ -19,7 +19,10 @@ int nn_ngcd_sdiv_cmp(nn_src_t a, int_t m, nn_src_t b, int_t n, int_t s)
 
    nn_t t = (nn_t) TMP_ALLOC(m*sizeof(uint_t));
       
-   nn_sub(t, a, m, b, n);
+   uint_t cy = nn_sub(t, a, m, b, n);
+   if (cy != 0)
+      nn_neg(t, t, n);
+
    n = nn_normalise(t, m);
 
    return n > s ? 1 : n == s ? 0 : -1;

@@ -12,6 +12,7 @@ void nn_mul_karatsuba(nn_t p, nn_src_t a, int_t m, nn_src_t b, int_t n)
 {
    CCAS_ASSERT(!NN_OVERLAP(p, m + n, a, m));
    CCAS_ASSERT(!NN_OVERLAP(p, m + n, b, n));
+   CCAS_ASSERT(n >= 0);
    CCAS_ASSERT(m >= n);
    CCAS_ASSERT(n >= (m + 1)/2);
 
@@ -33,11 +34,11 @@ void nn_mul_karatsuba(nn_t p, nn_src_t a, int_t m, nn_src_t b, int_t n)
    nn_mul_m(p, a, b, m2);
    nn_mul(p + 2*m2, a + m2, h1, b + m2, h2);
 
-   nn_sub(t, t, 2*m2 + 1, p, 2*m2);
-   nn_sub(t, t, 2*m2 + 1, p + 2*m2, h1 + h2);
+   nn_sub(t, t, 2*m2 + 2, p, 2*m2);
+   nn_sub(t, t, 2*m2 + 2, p + 2*m2, h1 + h2);
 
-   nn_add(p + m2, p + m2, m + h2, t, 2*m2 + 1);
-   
+   nn_add(p + m2, p + m2, m + h2, t, CCAS_MIN(2*m2 + 2, m + h2));
+
    TMP_END;
 }
 

@@ -11,7 +11,8 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
 
    int_t pn1, pn2, un = mn >= 0 ? mn : -mn;
    int sgn = mn >= 0 ? 1 : -1;
-   uint_t bw1, bw2, cy;
+   int bw1, bw2;
+   uint_t cy;
    TMP_INIT;
 
    TMP_START;
@@ -20,17 +21,20 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    nn_t u = (nn_t) TMP_ALLOC((p1 + un)*sizeof(uint_t));
    nn_t v = (nn_t) TMP_ALLOC((p1 + un)*sizeof(uint_t));
 
-   nn_mul(t, a, p1, M[3], un);
+   nn_mul(t, a, p1, M[0], un);
    nn_mul(u, b, p1, M[1], un);
    if ((bw1 = -nn_sub_m(t, t, u, p1 + un)))
       nn_neg(t, t, p1 + un);
    pn1 = nn_normalise(t, p1 + un);
 
    nn_mul(u, a, p1, M[2], un);
-   nn_mul(v, b, p1, M[0], un);
+   nn_mul(v, b, p1, M[3], un);
    if ((bw2 = -nn_sub_m(u, v, u, p1 + un)))
       nn_neg(u, u, p1 + un);
    pn2 = nn_normalise(u, p1 + un);
+
+   nn_zero(a, p1);
+   nn_zero(b, p1);
 
    if ((sgn ^ bw1) < 0)
    {
@@ -49,7 +53,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
         a[m++] = cy;
    }
 
-   if ((sgn ^ bw2) > 0)
+   if ((sgn ^ bw2) < 0)
    {
       nn_sub(b, b, n, u, pn2);
       n = nn_normalise(b, n);
@@ -65,7 +69,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
       if (cy != 0)
         b[n++] = cy;
    }
-
+   
    TMP_END; 
 
    return m;  

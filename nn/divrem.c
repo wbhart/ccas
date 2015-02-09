@@ -21,7 +21,7 @@ void nn_divrem(nn_t q, nn_t r, nn_src_t a, int_t m, nn_src_t d, int_t n)
    nn_shl(d2, d, n, norm);
    
    /* precompute inverses */
-   pi1 = preinvert1(d[n - 1]);
+   pi1 = preinvert1(d2[n - 1]);
    
    int_t qn = m - n + 1;
    

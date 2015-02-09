@@ -30,6 +30,6 @@ void nn_divrem_divconquer_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
    nn_div_pi1(q, a[m - q1], a, m - q1, d, n, pi1);
    nn_mul(p, d, n, q, q2);
    nn_sub_m(a, a, p, q2 + n);
-  
+
    TMP_END;
 }

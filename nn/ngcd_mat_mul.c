@@ -6,8 +6,8 @@ void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2)
    int_t un1 = (*m1) > 0 ? (*m1) : -(*m1);
    int_t un2 = m2 > 0 ? m2 : -m2;
    int_t un = un1 + un2;
-   int_t sgn1 = (*m1) > 0 ? 1 : -1;
-   int_t sgn2 = m2 > 0 ? 1 : -1;
+   int sgn1 = (*m1) > 0 ? 1 : -1;
+   int sgn2 = m2 > 0 ? 1 : -1;
    TMP_INIT;
 
    TMP_START;
@@ -17,6 +17,11 @@ void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2)
    nn_t u2 = (nn_t) TMP_ALLOC((un + 1)*sizeof(uint_t));
    nn_t u3 = (nn_t) TMP_ALLOC((un + 1)*sizeof(uint_t));
    nn_t u4 = (nn_t) TMP_ALLOC((un + 1)*sizeof(uint_t));
+
+   nn_zero(u1, un + 1);
+   nn_zero(u2, un + 1);
+   nn_zero(u3, un + 1);
+   nn_zero(u4, un + 1);
 
    if (un2 >= un1)
    {
@@ -65,6 +70,6 @@ void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2)
    nn_copyi(M1[3], u4, un1);
 
    TMP_END;
-
+   
    (*m1) = (sgn1 ^ sgn2) < 0 ? -un1 : un1; 
 }

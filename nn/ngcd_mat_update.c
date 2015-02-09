@@ -41,6 +41,6 @@ void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn)
 
    TMP_END;
 
-   (*mn) = sgn > 0 ? un : -un;
+   (*mn) = sgn > 0 ? -un : un;
 }
 

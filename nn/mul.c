@@ -35,9 +35,9 @@ void nn_mul(nn_t p, nn_src_t a, int_t m, nn_src_t b, int_t n)
       r -= n;
 
    nn_mul(p, b, n, a, r);
-  
+
    TMP_START;
-   t = (nn_t) TMP_ALLOC(n + 1);
+   t = (nn_t) TMP_ALLOC((n + 1)*sizeof(uint_t));
 
    while (m > r)
    {

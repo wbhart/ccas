@@ -5,6 +5,7 @@
 #define DIVREM_NEWTON_THRESHOLD 1000
 #define MUL_KARATSUBA_THRESHOLD 30
 #define MUL_FFT_THRESHOLD 1000
+#define NGCD_THRESHOLD 100
 
 typedef uint_t * nn_t;
 typedef const uint_t * nn_src_t;
@@ -105,7 +106,7 @@ static inline
 uint_t nn_add(nn_t a, nn_src_t b, int_t m, nn_src_t c, int_t n)
 {
    CCAS_ASSERT(a == b || !NN_OVERLAP(a, m, b, m));
-   CCAS_ASSERT(a == b || !NN_OVERLAP(a, m, c, n));
+   CCAS_ASSERT(a == c || !NN_OVERLAP(a, m, c, n));
    CCAS_ASSERT(m >= n);
    CCAS_ASSERT(n >= 0);
 
@@ -122,7 +123,7 @@ static inline
 uint_t nn_sub(nn_t a, nn_src_t b, int_t m, nn_src_t c, int_t n)
 {
    CCAS_ASSERT(a == b || !NN_OVERLAP(a, m, b, m));
-   CCAS_ASSERT(a == b || !NN_OVERLAP(a, m, c, n));
+   CCAS_ASSERT(a == c || !NN_OVERLAP(a, m, c, n));
    CCAS_ASSERT(m >= n);
    CCAS_ASSERT(n >= 0);
    
@@ -351,8 +352,8 @@ void nn_ngcd_sdiv(nn_t q, nn_t r, nn_src_t a, int_t m,
                                                nn_src_t b, int_t n, int_t s);
 											   
 /**
-   Return 1, 0, -1 depending whether the number of words in {a, m} - {b, n}
-   is greater than, equal to or less than s.
+   Return 1, 0 depending whether the number of words in {a, m} - {b, n}
+   is greater than s.
    We require m >= n >= s > 0.
 */
 int nn_ngcd_sdiv_cmp(nn_src_t a, int_t m, nn_src_t b, int_t n, int_t s);
@@ -373,6 +374,15 @@ void nn_ngcd_mat_clear(nn_t * M);
 */
 void nn_ngcd_mat_identity(nn_t * M, int_t * mn);
 
+/**
+   Return 1 if the matrix M, mn is the identity, else return 0.
+*/
+static inline
+int nn_ngcd_mat_is_identity(nn_t * M, int_t mn)
+{
+   return mn == 1 && M[0][0] == 1 && M[1][0] == 0
+                  && M[2][0] == 0 && M[3][0] == 1;
+}
 /**
    Set the matrix M1 with entries no bigger then |m1| words to M2*M1 where
    M2 is a matrix with entries no bigger than |m2| words. The top right and
@@ -415,6 +425,14 @@ void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn);
    m - s < m/2 words.
 */
 int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn);
+
+/**
+   Set g to the greatest common divisor of {a, m} and {b, n}. The length
+   of g in words is returned by the function. We require g to have space
+   for n words.
+   We require m >= n > 0.
+*/
+int_t nn_gcd_ngcd(nn_t g, nn_src_t a, int_t m, nn_src_t b, int_t n);
 
 /****************************************************************************
 
