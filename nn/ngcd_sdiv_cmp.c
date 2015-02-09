@@ -25,8 +25,8 @@ int nn_ngcd_sdiv_cmp(nn_src_t a, int_t m, nn_src_t b, int_t n, int_t s)
 
    n = nn_normalise(t, m);
 
-   return n > s ? 1 : n == s ? 0 : -1;
-   
    TMP_END;
+
+   return n > s;
 }
 

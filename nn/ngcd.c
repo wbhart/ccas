@@ -12,7 +12,7 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
    TMP_START;
    nn_t q = (nn_t) TMP_ALLOC(m*sizeof(uint_t));
    int_t m1, qn;
-   int sgn = 1;
+   int sgn = 1, flag;
 
    nn_t * M1;
    int_t mn1, s = m/2 + 1;
@@ -20,7 +20,7 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
 
    if (n > NGCD_THRESHOLD)
    {
-      if (n > 3*m0/4 + 2)
+      if (n > 3*m0/4 + 2 && nn_ngcd_sdiv_cmp(a, m, b, n, s))
       {
          int_t p1 = m0/2;
 
@@ -31,7 +31,7 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
          n = nn_normalise(b, m);
       }
 
-      while (m > 3*m0/4 + 1 && nn_ngcd_sdiv_cmp(a, m, b, n, s) > 0)
+      while (m > 3*m0/4 + 1 && nn_ngcd_sdiv_cmp(a, m, b, n, s))
       {
          nn_ngcd_sdiv(q, a, a, m, b, n, s);
       
@@ -45,7 +45,7 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
          nn_ngcd_mat_update(M, mn, q, qn);
       }
    
-      if (n > s + 2)
+      if (n > s + 2 && nn_ngcd_sdiv_cmp(a, m, b, n, s))
       {
          int_t p2 = 2*s - m + 1;
          M1 = nn_ngcd_mat_init(m/2);
@@ -63,7 +63,7 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn)
       }
    }
 
-   while (nn_ngcd_sdiv_cmp(a, m, b, n, s) > 0)
+   while (nn_ngcd_sdiv_cmp(a, m, b, n, s))
    {
       /* ensure r1 != r2 */
       nn_ngcd_sdiv(q, a, a, m, b, n, s);
