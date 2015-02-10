@@ -4,8 +4,8 @@
 int nn_ngcd_sdiv_cmp(nn_src_t a, int_t m, nn_src_t b, int_t n, int_t s)
 {
    CCAS_ASSERT(s > 0);
-   CCAS_ASSERT(n >= s);
-
+   CCAS_ASSERT(n > s);
+   CCAS_ASSERT(m >= n);
    TMP_INIT;
 
    if (m > n + 1)

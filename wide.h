@@ -152,7 +152,7 @@ uint_t preinvert1(uint_t d)
    
    wide_t r = (((wide_t) -(++d)) << INT_BITS);
 
-   return (uint_t) (r / d);
+   return d == 0 ? 0 : (uint_t) (r / d);
 }
 
 /**
@@ -174,7 +174,9 @@ uint_t widedivappr_pi1(uint_t hi, uint_t lo, uint_t d, uint_t dinv)
    wide_t r, q1 = (wide_t) hi * (wide_t) dinv + u;
    const wide_t q0 = (wide_t) lo * (wide_t) dinv;
 
-   return (uint_t) ((q1 + (q0 >> INT_BITS)) >> INT_BITS);
+   uint_t qd = (uint_t) ((q1 + (q0 >> INT_BITS)) >> INT_BITS);
+	
+   return qd;
 }
 
 /**
@@ -198,7 +200,7 @@ uint_t widedivrem_pi1(uint_t * q, uint_t hi, uint_t lo, uint_t d, uint_t dinv)
       r -= d;
       (*q)++;
    }
-
+  
    return (uint_t) r;
 }
 

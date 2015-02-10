@@ -5,7 +5,7 @@
 #define DIVREM_NEWTON_THRESHOLD 1000
 #define MUL_KARATSUBA_THRESHOLD 30
 #define MUL_FFT_THRESHOLD 1000
-#define NGCD_THRESHOLD 100
+#define NGCD_THRESHOLD 8
 
 typedef uint_t * nn_t;
 typedef const uint_t * nn_src_t;
@@ -401,7 +401,7 @@ void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2);
    sign. The entries of M are assumed to have no more than |mn| words.
 */   
 int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
-                                                 int_t p1, nn_t * M, int_t mn);
+                                                int_t p1, nn_t * M, int_t *mn);
 											   
 /**
    The matrix M is multiplied by [0, -1; -1, {q, qn}] on the left. The top
@@ -412,6 +412,33 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
 void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn);
 
 /**
+   Swap {a, m} with {b, n} and swap rows of M, changing sign of mn. We
+   assume n > m.
+*/
+static inline
+void ngcd_reorder(nn_t a, int_t * m, nn_t b, int_t * n, nn_t * M, int_t * mn)
+{
+   CCAS_ASSERT((*n) > (*m));
+   CCAS_ASSERT((*m) >= 0);
+  
+   TMP_INIT;
+   
+   TMP_START;
+   nn_t t = (nn_t) TMP_ALLOC((*n)*sizeof(uint_t));
+   
+   nn_copyi(t, b, *n);
+   nn_copyi(b, a, *m);
+   nn_zero(b + (*m), (*n) - (*m));
+   nn_copyi(a, t, (*n));
+   
+   int_t tn = (*m); (*m) = (*n); (*n) = tn;
+   
+   nn_swap(M[0], M[2]);
+   nn_swap(M[1], M[3]);
+   (*mn) = -(*mn);
+}
+
+/**
    Half-gcd using the algorithm of Moller:
    http://www.lysator.liu.se/~nisse/archive/S0025-5718-07-02017-0.pdf
 
@@ -419,10 +446,11 @@ void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn);
    returns a matrix M of determinant 1 such that application of M to
    (a, b)^T would result in the final (a, b). If s = m/2 + 1, the final
    return values a and b will be such that a - b has at most s words. The
-   number of words of a is returned by the function, with b being no
-   larger than a. A bound on the coefficients in M is given by mn. We
-   require that n > s on input. The largest entries of M will not exceed
-   m - s < m/2 words.
+   number of words of a is returned by the function, with the number of
+   words of b being no larger than the number of words of a. A bound on
+   the coefficients in M is given by mn. We require that n > s on input.
+   The largest entries of M will not exceed m - s < m/2 words. We require
+   m >= n. We don't require that {a, m} >= {b, n} however.
 */
 int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn);
 

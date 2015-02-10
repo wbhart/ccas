@@ -59,10 +59,10 @@ void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2)
       u4[un] = nn_add_m(u4, t1, t2, un);
    }
 
-   un1 = nn_normalise(u1, un);
-   un1 = CCAS_MAX(un1, nn_normalise(u2, un));
-   un1 = CCAS_MAX(un1, nn_normalise(u3, un));
-   un1 = CCAS_MAX(un1, nn_normalise(u4, un));
+   un1 = nn_normalise(u1, un + 1);
+   un1 = CCAS_MAX(un1, nn_normalise(u2, un + 1));
+   un1 = CCAS_MAX(un1, nn_normalise(u3, un + 1));
+   un1 = CCAS_MAX(un1, nn_normalise(u4, un + 1));
 
    nn_copyi(M1[0], u1, un1);
    nn_copyi(M1[1], u2, un1);

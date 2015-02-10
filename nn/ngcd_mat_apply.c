@@ -2,15 +2,15 @@
 #include "nn.h"
 
 int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n, 
-                                int_t p1, nn_t * M, int_t mn)
+                                int_t p1, nn_t * M, int_t * mn)
 {
    CCAS_ASSERT(m >= n);
    CCAS_ASSERT(n >= 0);
    CCAS_ASSERT(p1 < n);
    CCAS_ASSERT(!NN_OVERLAP(a, m, b, n));
 
-   int_t pn1, pn2, un = mn >= 0 ? mn : -mn;
-   int sgn = mn >= 0 ? 1 : -1;
+   int_t pn1, pn2, un = (*mn) >= 0 ? (*mn) : -(*mn);
+   int sgn = (*mn) >= 0 ? 1 : -1;
    int bw1, bw2;
    uint_t cy;
    TMP_INIT;
@@ -39,7 +39,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    if ((sgn ^ bw1) < 0)
    {
       nn_sub(a, a, m, t, pn1);
-      m = nn_normalise(a, m);
+	  m = nn_normalise(a, m);
    } else
    {
       if (m >= pn1)
@@ -56,7 +56,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    if ((sgn ^ bw2) < 0)
    {
       nn_sub(b, b, n, u, pn2);
-      n = nn_normalise(b, n);
+	  n = nn_normalise(b, n);
    } else
    {
       if (n >= pn2)
@@ -70,6 +70,9 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
         b[n++] = cy;
    }
    
+   if (m < n)
+      ngcd_reorder(a, &m, b, &n, M, mn);
+	  
    TMP_END; 
 
    return m;  
