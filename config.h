@@ -1,2 +1,2 @@
-#define WANT_ASSERT 0 
+#define WANT_ASSERT 1 
 
