@@ -5,7 +5,7 @@
 #define DIVREM_NEWTON_THRESHOLD 1000
 #define MUL_KARATSUBA_THRESHOLD 30
 #define MUL_FFT_THRESHOLD 1000
-#define NGCD_THRESHOLD 8
+#define NGCD_THRESHOLD 100
 
 typedef uint_t * nn_t;
 typedef const uint_t * nn_src_t;
