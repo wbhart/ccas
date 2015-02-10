@@ -39,7 +39,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    if ((sgn ^ bw1) < 0)
    {
       nn_sub(a, a, m, t, pn1);
-	  m = nn_normalise(a, m);
+      m = nn_normalise(a, m);
    } else
    {
       if (m >= pn1)
@@ -56,7 +56,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    if ((sgn ^ bw2) < 0)
    {
       nn_sub(b, b, n, u, pn2);
-	  n = nn_normalise(b, n);
+      n = nn_normalise(b, n);
    } else
    {
       if (n >= pn2)
@@ -72,7 +72,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    
    if (m < n)
       ngcd_reorder(a, &m, b, &n, M, mn);
-	  
+      
    TMP_END; 
 
    return m;  

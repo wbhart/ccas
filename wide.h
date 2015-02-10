@@ -175,7 +175,7 @@ uint_t widedivappr_pi1(uint_t hi, uint_t lo, uint_t d, uint_t dinv)
    const wide_t q0 = (wide_t) lo * (wide_t) dinv;
 
    uint_t qd = (uint_t) ((q1 + (q0 >> INT_BITS)) >> INT_BITS);
-	
+    
    return qd;
 }
 

@@ -301,7 +301,7 @@ void nn_mul_karatsuba(nn_t p, nn_src_t a, int_t m, nn_src_t b, int_t n);
 */
 void nn_divrem_divconquer_pi1(nn_t q, uint_t cy, nn_t a, int_t m, 
                                              nn_src_t d, int_t n, uint_t pi1);
-											
+                                            
 /****************************************************************************
 
    Asymptotically fast algorithms
@@ -341,7 +341,7 @@ void nn_invert_pi1(nn_t x, nn_src_t d, int_t n, uint_t pi1);
 */
 void nn_divrem_newton_pi(nn_t q, uint_t cy, nn_t a, int_t m, 
                                               nn_src_t d, int_t n, nn_t dinv);
-											  
+                                              
 /**
    Compute a quotient {q, m - n + 1} and not too small remainder {r, n + 1}
    of {a, m} by {b, n}. The remainder is guaranteed to be at least s words
@@ -350,7 +350,7 @@ void nn_divrem_newton_pi(nn_t q, uint_t cy, nn_t a, int_t m,
 */
 void nn_ngcd_sdiv(nn_t q, nn_t r, nn_src_t a, int_t m,
                                                nn_src_t b, int_t n, int_t s);
-											   
+                                               
 /**
    Return 1, 0 depending whether the number of words in {a, m} - {b, n}
    is greater than s.
@@ -402,7 +402,7 @@ void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2);
 */   
 int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
                                                 int_t p1, nn_t * M, int_t *mn);
-											   
+                                               
 /**
    The matrix M is multiplied by [0, -1; -1, {q, qn}] on the left. The top
    right and bottom left entry of the matrix M are implicitly negated and
@@ -507,16 +507,16 @@ void nn_divrem_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
    TMP_INIT;
    
    if (qn < DIVREM_DIVCONQUER_THRESHOLD)
-	  nn_divrem_classical_pi1(q, cy, a, m, d, n, pi1);
+      nn_divrem_classical_pi1(q, cy, a, m, d, n, pi1);
    else if (qn < DIVREM_NEWTON_THRESHOLD || n < DIVREM_NEWTON_THRESHOLD)
       nn_divrem_divconquer_pi1(q, cy, a, m, d, n, pi1);
    else
    {
       TMP_START;
-	  nn_t dinv = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
-	  nn_invert_pi1(dinv, d, n, pi1);
-	  nn_divrem_newton_pi(q, cy, a, m, d, n, dinv);
-	  TMP_END;
+      nn_t dinv = (nn_t) TMP_ALLOC(n*sizeof(uint_t));
+      nn_invert_pi1(dinv, d, n, pi1);
+      nn_divrem_newton_pi(q, cy, a, m, d, n, dinv);
+      TMP_END;
    }
 }
 

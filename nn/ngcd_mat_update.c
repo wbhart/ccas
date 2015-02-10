@@ -44,7 +44,7 @@ void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn)
    {
       nn_zero(M[2] + un, un0 - un);
       nn_zero(M[3] + un, un0 - un);
-	  un = un0;
+      un = un0;
    }
 
    TMP_END;
