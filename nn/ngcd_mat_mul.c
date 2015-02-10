@@ -3,8 +3,8 @@
 
 void nn_ngcd_mat_mul(nn_t * M1, int_t * m1, nn_t * M2, int_t m2)
 {
-   int_t un1 = (*m1) > 0 ? (*m1) : -(*m1);
-   int_t un2 = m2 > 0 ? m2 : -m2;
+   int_t un1 = CCAS_ABS(*m1);
+   int_t un2 = CCAS_ABS(m2);
    int_t un = un1 + un2;
    int sgn1 = (*m1) > 0 ? 1 : -1;
    int sgn2 = m2 > 0 ? 1 : -1;

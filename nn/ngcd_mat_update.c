@@ -5,7 +5,7 @@ void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn)
 {
    CCAS_ASSERT(qn >= 0);
    
-   int_t un = (*mn) >= 0 ? (*mn) : -(*mn);
+   int_t un = CCAS_ABS(*mn);
    int_t un0 = un;
    int_t rn = un + qn;
    int sgn = (*mn) >= 0 ? 1 : -1;

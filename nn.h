@@ -274,7 +274,7 @@ int_t nn_gcd_euclidean(nn_t g, nn_t a, int_t m, nn_t b, int_t n);
    We require m >= n > 0. No aliasing of g and s is allowed. We require
    g and s to both have space for n words.
 */
-int_t xgcd_euclidean(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
+int_t nn_xgcd_euclidean(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
                                                         nn_src_t b, int_t n);
 
 /****************************************************************************
@@ -412,6 +412,14 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
 void nn_ngcd_mat_update(nn_t * M, int_t * mn, nn_src_t q, int_t qn);
 
 /**
+   Given a regular matrix M with entries of size at most |mn| with the sign of
+   the upper left entry given by the sign of mn, replace (s1, s2)^T with
+   M(s1, s2)^T. The size of the largest coefficient out of s1 and s2 is given
+   by sn, and the new maximum size is returned.
+*/
+int_t nn_ngcd_cofactor_update(nn_t s1, nn_t s2, int_t sn, nn_t * M, int_t mn);
+
+/**
    Swap {a, m} with {b, n} and swap rows of M, changing sign of mn. We
    assume n > m.
 */
@@ -462,6 +470,13 @@ int_t nn_ngcd(nn_t a, int_t m, nn_t b, int_t n, nn_t * M, int_t * mn);
 */
 int_t nn_gcd_ngcd(nn_t g, nn_src_t a, int_t m, nn_src_t b, int_t n);
 
+/**
+   As for nn_gcd_ngcd, except also return a cofactor {s, sn} such that
+   gcd(a, b) = sa + tb for some t. Note that sn may be negative.
+*/
+int_t nn_xgcd_ngcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
+                                                        nn_src_t b, int_t n);
+														
 /****************************************************************************
 
    Tuned algorithms

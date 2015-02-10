@@ -1,7 +1,7 @@
 #include "ccas.h"
 #include "nn.h"
 
-int_t xgcd_euclidean(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
+int_t nn_xgcd_euclidean(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
                                                  nn_src_t b, int_t n)
 {
    CCAS_ASSERT(m >= n);

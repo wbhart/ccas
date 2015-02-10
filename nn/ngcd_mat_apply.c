@@ -9,7 +9,7 @@ int_t nn_ngcd_mat_apply(nn_t a, int_t m, nn_t b, int_t n,
    CCAS_ASSERT(p1 < n);
    CCAS_ASSERT(!NN_OVERLAP(a, m, b, n));
 
-   int_t pn1, pn2, un = (*mn) >= 0 ? (*mn) : -(*mn);
+   int_t pn1, pn2, un = CCAS_ABS(*mn);
    int sgn = (*mn) >= 0 ? 1 : -1;
    int bw1, bw2;
    uint_t cy;
