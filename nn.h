@@ -6,6 +6,7 @@
 #define MUL_KARATSUBA_THRESHOLD 30
 #define MUL_FFT_THRESHOLD 4000
 #define NGCD_THRESHOLD 20
+#define GETSTR_DIVCONQUER_THRESHOLD 20
 
 typedef uint_t * nn_t;
 typedef const uint_t * nn_src_t;
@@ -206,6 +207,29 @@ void nn_randbits(nn_t a, int_t m, rand_t state, int_t bits);
    String I/O
    
 *****************************************************************************/
+
+/**
+   Write a string representation of {a, m} in base 10 into the string
+   str, which must have enough space to contain the string. No null
+   terminator is written, but the number of actual digits written is
+   returned. No leading zeros are written. We require digits to be
+   set to the number of digits expected to be written.
+*/
+int_t nn_getstr_classical(char * str, int_t digits, nn_t a, int_t m);
+
+/**
+   Write a string representation of {a, m} in base 10 into the string
+   str, which must have enough space to contain the string. No null
+   terminator is written, but the number of actual digits written is
+   returned. No leading zeros are written. We require digits to be
+   set to the number of digits expected to be written.
+   Requires a tree structure containing powers of 10 as big integers,
+   the normalised lengths of which are given by the corresponding
+   entries of tn. The powers of 10 required are 10, 10^2, 10^4, ...,
+   10^(2^k) where 2^k is the largest power of 2 less than digits.
+*/
+int_t nn_getstr_divconquer(char * str, int_t digits, nn_t a, 
+                                       int_t m, nn_t * tree, int_t * tn);
 
 /** 
    Return a string giving the decimal expansion of {a, m}.

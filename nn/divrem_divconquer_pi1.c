@@ -24,10 +24,11 @@ void nn_divrem_divconquer_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
    /* compute top q1 words of quotient */
    nn_div_pi1(q + q2, cy, r + q2, m - q2, d, n, pi1);
    nn_mul(p, d, n, q + q2, q1);
-   nn_sub_m(a + q2, a + q2, p, q1 + n);
+   nn_sub_m(a + q2, a + q2, p, q1 + n - 1);
    
    /* compute bottom q2 words of quotient */
-   nn_div_pi1(q, a[m - q1], a, m - q1, d, n, pi1);
+   nn_copyi(r, a, m - q1);
+   nn_div_pi1(q, a[m - q1], r, m - q1, d, n, pi1);
    nn_mul(p, d, n, q, q2);
    nn_sub_m(a, a, p, q2 + n);
 

@@ -31,22 +31,26 @@ void nn_divrem_newton_pi(nn_t q, uint_t cy, nn_t a, int_t m,
 	  int_t q1 = CCAS_MIN(qn, n); /* quotient limbs computed this iteration */
 	  
 	  /* compute approx. quotient a_hi*dinv/B^n */
-	  nn_mul(t, dinv, n, a + m - n + 1, q1 - 1);
-	  t[n + q1 - 1] = nn_addmul_1(t + q1 - 1, d, n, cy);
+	  nn_mul(t, dinv, n, a + m - qn + 1, q1 - 1);
+	  t[n + q1 - 1] = nn_addmul_1(t + q1 - 1, dinv, n, cy);
+	  /* multiply by implicit high bit of dinv */
+	  t[n + q1 - 1] += cy + nn_add_m(t + n, t + n, a + m - qn + 1, q1 - 1); 
 	  nn_copyi(q + qn - q1, t + n, q1);
 	  
 	  /* compute remainder */
 	  nn_mul(u, d, n, t + n, q1);
-	  nn_sub_m(a +  m - n - q1 + 1, a + m - n - q1 + 1, u, n + 1);
+	  nn_sub_m(a +  m - n - q1 + 1, a + m - n - q1 + 1, u, n + q1 - 1);
 	  
 	  /* while remainder too large, increase quotient */
 	  while (a[m - q1 + 1] != 0 || nn_cmp(a + m - n - q1 + 1, d, n) >= 0)
 	  {
 	     nn_add_1(q + qn - q1, q + qn - q1, q1, 1);
-		 nn_sub_m(a + m - n - q1 + 1, a + m - n - q1 + 1, d, n);
+		 a[m - q1 + 1] -= nn_sub_m(a + m - n - q1 + 1, a + m - n - q1 + 1, d, n);
 	  }
 	  
-	  cy = a[m - q1];
+	  cy = a[m - q1]; 
+	  if (m >= 2*n)
+	     a[m - q1] = 0;
    }
    	  
    TMP_END;
