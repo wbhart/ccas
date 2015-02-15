@@ -7,6 +7,7 @@
 #define MUL_FFT_THRESHOLD 4000
 #define NGCD_THRESHOLD 20
 #define GETSTR_DIVCONQUER_THRESHOLD 20
+#define SETSTR_DIVCONQUER_THRESHOLD 20
 
 typedef uint_t * nn_t;
 typedef const uint_t * nn_src_t;
@@ -223,12 +224,12 @@ int_t nn_getstr_classical(char * str, int_t digits, nn_t a, int_t m);
    are stored in the array tn. Both tree and tn must have room
    for depth elements.
 */
-void nn_getstr_tree_init(nn_t * tree, int_t * tn, int_t depth);
+void nn_decimal_tree_init(nn_t * tree, int_t * tn, int_t depth);
 
 /**
    Clean up memory allocated for power of 10 tree.
 */
-void nn_getstr_tree_clear(nn_t * tree, int_t depth);
+void nn_decimal_tree_clear(nn_t * tree, int_t depth);
 
 /**
    Write a string representation of {a, m} in base 10 into the string
@@ -249,6 +250,25 @@ int_t nn_getstr_divconquer(char * str, int_t digits, nn_t a,
    The user is responsible for freeing the string after use.
 */
 char * nn_getstr(nn_t a, int_t m);
+
+/**
+   Set a to the value represented by the decimal string str, which
+   is taken to have the given number of digits. The length of the
+   resulting integer in words is returned. The integer a is assumed
+   to have sufficient space to store the result.
+*/
+int_t nn_setstr_classical(nn_t a, const char * str, int_t digits);
+
+/**
+   Set a to the value represented by the decimal string str, which
+   is taken to have the given number of digits. The length of the
+   resulting integer in words is returned. The integer a is assumed
+   to have sufficient space to store the result. The arrays tree
+   and tn are contain powers of 10 and their lengths, repectively,
+   starting with 10^1.
+*/
+int_t nn_setstr_divconquer(nn_t a, const char * str, int_t digits,
+                                                nn_t * tree, int_t * tn);
 
 /**
    Set {a, len} to the integer represented by str in base 10.

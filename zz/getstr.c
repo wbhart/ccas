@@ -25,7 +25,7 @@ char * zz_getstr(zz_srcptr a)
       int_t * tn = (int_t *) TMP_ALLOC(depth*sizeof(int_t));
       
       /* initialise powers of 10 up to 10^depth */
-      nn_getstr_tree_init(tree, tn, depth);
+      nn_decimal_tree_init(tree, tn, depth);
 	  
       /* write digits of {a, m} into string */
       i = digits - nn_getstr_divconquer(str, digits, a->n, m, tree, tn);
@@ -39,10 +39,10 @@ char * zz_getstr(zz_srcptr a)
          for (j = i; j < digits; j++)
             str[j - i] = str[j];
 			
-	  /* clean up tree structure */
-	  nn_getstr_tree_clear(tree, depth);
+      /* clean up tree structure */
+      nn_decimal_tree_clear(tree, depth);
 	  
-	  TMP_END;
+      TMP_END;
    }
 
    str[digits - i] = '\0';

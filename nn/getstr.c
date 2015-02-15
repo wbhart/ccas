@@ -22,7 +22,7 @@ char * nn_getstr(nn_t a, int_t m)
       int_t * tn = (int_t *) TMP_ALLOC(depth*sizeof(int_t));
       
 	  /* initialise powers of 10 up to 10^depth */
-	  nn_getstr_tree_init(tree, tn, depth);
+	  nn_decimal_tree_init(tree, tn, depth);
 	  
 	  /* write digits of {a, m} into string */
 	  i = digits - nn_getstr_divconquer(str, digits, a, m, tree, tn);
@@ -37,7 +37,7 @@ char * nn_getstr(nn_t a, int_t m)
             str[j - i] = str[j];
 			
 	  /* clean up tree structure */
-	  nn_getstr_tree_clear(tree, depth);
+	  nn_decimal_tree_clear(tree, depth);
 	  
 	  TMP_END;
    }

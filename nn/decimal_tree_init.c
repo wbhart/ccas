@@ -1,7 +1,7 @@
 #include "ccas.h"
 #include "nn.h"
 
-void nn_getstr_tree_init(nn_t * tree, int_t * tn, int_t depth)
+void nn_decimal_tree_init(nn_t * tree, int_t * tn, int_t depth)
 {
    CCAS_ASSERT(depth >= 0);
 
