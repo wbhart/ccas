@@ -19,6 +19,7 @@ File structure is as follows:
    ccas.h - platform dependent defines and macros and type definitions
    wide.h - routines for arithmetic involving double width integers
    nn/ - routines for arithmetic of multiprecision natural numbers
+   zz/ - routines for arithmetic of multiprecision integers
    fft/ - fast fourier transform convolution routines
    rand/ - routines for generating random words
 
