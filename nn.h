@@ -18,10 +18,10 @@ typedef const uint_t * nn_src_t;
    Swap the nn_t's a and b by swapping pointers.
 */
 #define nn_swap(a, b) \
-   do { \
+   do {               \
       nn_t __t = (a); \
-      (a) = (b); \
-      (b) = __t; \
+      (a) = (b);      \
+      (b) = __t;      \
    } while (0)
 
 /****************************************************************************
@@ -194,13 +194,12 @@ uint_t nn_shr(nn_t a, nn_src_t b, int_t m, int_t bits);
 *****************************************************************************/
 
 /**
-   Set {a, m} to a uniformly random value in the range [0, 2^bits),
+   Set a to a uniformly random value in the range [0, 2^bits),
    but with the high bit of the random value set so that the number
-   has exactly the given number of bits. The  m*INT_BITS - bits
-   most significant bits of {a, m} are set to zero.
-   We require that 0 <= bits <= m*INT_BITS. 
+   has exactly the given number of bits.
+   We require that 0 <= bits. 
 */ 
-void nn_randbits(nn_t a, int_t m, rand_t state, int_t bits);
+void nn_randbits(nn_t a, rand_t state, int_t bits);
 
 /****************************************************************************
 
@@ -216,6 +215,20 @@ void nn_randbits(nn_t a, int_t m, rand_t state, int_t bits);
    set to the number of digits expected to be written.
 */
 int_t nn_getstr_classical(char * str, int_t digits, nn_t a, int_t m);
+
+/**
+   Initialise a power of 10 tree for get/setstr_divconquer. Powers
+   of 10 up to 10^depth are computed. The values are stored in the
+   array tree, starting with 10^1, and the corresponding lengths
+   are stored in the array tn. Both tree and tn must have room
+   for depth elements.
+*/
+void nn_getstr_tree_init(nn_t * tree, int_t * tn, int_t depth);
+
+/**
+   Clean up memory allocated for power of 10 tree.
+*/
+void nn_getstr_tree_clear(nn_t * tree, int_t depth);
 
 /**
    Write a string representation of {a, m} in base 10 into the string
@@ -288,7 +301,7 @@ void nn_divrem_classical_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
    for n words.
    We require m >= n > 0.
 */
-int_t nn_gcd_euclidean(nn_t g, nn_t a, int_t m, nn_t b, int_t n);
+int_t nn_gcd_euclidean(nn_t g, nn_src_t a, int_t m, nn_src_t b, int_t n);
 
 /**
    Set g to the greatest common divisor of {a, m} and {b, n}. The length
@@ -500,7 +513,7 @@ int_t nn_gcd_ngcd(nn_t g, nn_src_t a, int_t m, nn_src_t b, int_t n);
 */
 int_t nn_xgcd_ngcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
                                                         nn_src_t b, int_t n);
-														
+
 /****************************************************************************
 
    Tuned algorithms
@@ -575,3 +588,44 @@ void nn_divrem(nn_t q, nn_t r, nn_src_t a, int_t m, nn_src_t d, int_t n);
 */
 void nn_div_pi1(nn_t q, uint_t cy, nn_t a, int_t m,
                                nn_src_t d, int_t n, uint_t dinv);
+							   
+/**
+   Set {q, m - n + 1} to the quotient of {a, m} by {d, n}.
+   We require m >= n > 0. The average complexity of the algorithm
+   depends on the size of the quotient, not of the size of the
+   inputs a and d.
+*/
+void nn_div(nn_t q, nn_src_t a, int_t m, nn_src_t d, int_t n);
+
+/**
+   Set g to the greatest common divisor of {a, m} and {b, n}. The length
+   of g in words is returned by the function. We require g to have space
+   for n words.
+   We require m >= n > 0.
+*/
+static inline
+int_t nn_gcd(nn_t g, nn_src_t a, int_t m, nn_src_t b, int_t n)
+{
+   if (n < 2*NGCD_THRESHOLD)
+      return nn_gcd_euclidean(g, a, m, b, n);
+   else
+      return nn_gcd_ngcd(g, a, m, b, n);
+}                                                                               
+
+/**
+   Set g to the greatest common divisor of {a, m} and {b, n}. The length
+   of g in words is returned by the function. We require g to have space
+   for n words.  Also return a cofactor {s, sn} such that
+   gcd(a, b) = sa + tb for some t. Note that sn may be negative.
+   We require m >= n > 0.
+*/
+static inline
+int_t nn_xgcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
+                                                        nn_src_t b, int_t n)
+{
+   if (n < 2*NGCD_THRESHOLD)
+      return nn_xgcd_euclidean(g, s, sn, a, m, b, n);
+   else
+      return nn_xgcd_ngcd(g, s, sn, a, m, b, n);
+}
+

@@ -35,11 +35,11 @@ void nn_divrem(nn_t q, nn_t r, nn_src_t a, int_t m, nn_src_t d, int_t n)
    for ( ; m >= 2*n; m -= n, qn -= n)
    {
       if (n < DIVREM_DIVCONQUER_THRESHOLD)
-	     nn_divrem_classical_pi1(q + qn - n, cy, a2 + m - 2*n + 1, 2*n - 1, d2, n, pi1);
-	  else if (n < DIVREM_NEWTON_THRESHOLD)
-	     nn_divrem_divconquer_pi1(q + qn - n, cy, a2 + m - 2*n + 1, 2*n - 1, d2, n, pi1);
-	  else
-	     nn_divrem_newton_pi(q + qn - n, cy, a2 + m - 2*n + 1, 2*n - 1, d2, n, dinv);
+         nn_divrem_classical_pi1(q + qn - n, cy, a2 + m - 2*n + 1, 2*n - 1, d2, n, pi1);
+      else if (n < DIVREM_NEWTON_THRESHOLD)
+         nn_divrem_divconquer_pi1(q + qn - n, cy, a2 + m - 2*n + 1, 2*n - 1, d2, n, pi1);
+      else
+         nn_divrem_newton_pi(q + qn - n, cy, a2 + m - 2*n + 1, 2*n - 1, d2, n, dinv);
 		 
 	  cy = a2[m - n];
 	  a2[m - n] = 0;
@@ -50,9 +50,9 @@ void nn_divrem(nn_t q, nn_t r, nn_src_t a, int_t m, nn_src_t d, int_t n)
    if (qn < DIVREM_DIVCONQUER_THRESHOLD)	
       nn_divrem_classical_pi1(q, cy, a2, m, d2, n, pi1);
    else if (qn < DIVREM_NEWTON_THRESHOLD)
-	  nn_divrem_divconquer_pi1(q, cy, a2, m, d2, n, pi1);
+      nn_divrem_divconquer_pi1(q, cy, a2, m, d2, n, pi1);
    else
-	  nn_divrem_newton_pi(q, cy, a2, m, d2, n, dinv);   
+      nn_divrem_newton_pi(q, cy, a2, m, d2, n, dinv);   
    
    /* shift remainder right */
    nn_shr(r, a2, n, norm);

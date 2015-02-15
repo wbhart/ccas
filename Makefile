@@ -7,7 +7,7 @@ LIBS=-L$(CURDIR)
 QUIET_CC = @echo '  ' CC '  ' $@;
 QUIET_AR = @echo '  ' AR '  ' $@;
 
-SOURCES=$(wildcard nn/*.c) $(wildcard rand/*.c) $(wildcard fft/*.c)
+SOURCES=$(wildcard nn/*.c) $(wildcard zz/*.c) $(wildcard rand/*.c) $(wildcard fft/*.c)
 HEADERS=$(wildcard *.h)
 
 OBJS=$(patsubst %.c, build/%.o, $(SOURCES))
@@ -25,6 +25,7 @@ clean:
 build:
 	mkdir -p build
 	mkdir -p build/nn
+	mkdir -p build/zz
 	mkdir -p build/rand
 	mkdir -p build/fft
 

@@ -28,8 +28,8 @@ void nn_div_pi1(nn_t q, uint_t cy, nn_t a, int_t m, nn_src_t d, int_t n, uint_t 
          nn_t t2 = (nn_t) TMP_ALLOC((qn + n)*sizeof(uint_t));
       
 	 /* multiply out */
-     nn_mul(t2, d, n, q, qn);
-     /* adjust if quotient too large */
+         nn_mul(t2, d, n, q, qn);
+         /* adjust if quotient too large */
 	 if (nn_sub_m(a, a, t2, n))
             nn_sub_1(q, q, qn, 1);
       }
