@@ -35,6 +35,29 @@ void poly_normalise(Poly_t pol)
 
 /*****************************************************************************
 
+   Swapping
+
+*****************************************************************************/
+
+static inline
+void poly_swap(Poly_t a, Poly_t b)
+{
+   if (a != b)
+   {
+      void * t = a->coeffs;
+      a->coeffs = b->coeffs;
+      b->coeffs = t;
+      int_t n = a->length;
+      a->length = b->length;
+      b->length = n;
+      n = a->alloc;
+      a->alloc = b->alloc;
+      b->alloc = n;
+   }
+}
+
+/*****************************************************************************
+
    Copying and negation
 
 *****************************************************************************/
