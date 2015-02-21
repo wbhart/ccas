@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "rand.h"
 
+#ifndef NN_H
+#define NN_H
+
 #define DIVREM_DIVCONQUER_THRESHOLD 30
 #define DIVREM_NEWTON_THRESHOLD 1000
 #define MUL_KARATSUBA_THRESHOLD 30
@@ -648,4 +651,6 @@ int_t nn_xgcd(nn_t g, nn_t s, int_t * sn, nn_src_t a, int_t m,
    else
       return nn_xgcd_ngcd(g, s, sn, a, m, b, n);
 }
+
+#endif
 

@@ -1,5 +1,8 @@
 #include "ccas.h"
 
+#ifndef RAND_H
+#define RAND_H
+
 typedef struct
 {
     uint_t rand1;
@@ -44,3 +47,6 @@ int_t randint(rand_t state, int_t limit);
    Requires 0 <= bits <= INT_BITS.
 */
 uint_t randbits(rand_t state, int_t bits);
+
+#endif
+

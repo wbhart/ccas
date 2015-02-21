@@ -1,5 +1,8 @@
 #include "nn.h"
 
+#ifndef ZZ_H
+#define ZZ_H
+
 typedef struct
 {
    nn_t n;
@@ -306,4 +309,6 @@ void zz_print(zz_srcptr a)
    If there is not enough memory, the function aborts.
 */
 void zz_fread(zz_ptr a, FILE * file);
+
+#endif
 
