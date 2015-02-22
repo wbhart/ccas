@@ -22,6 +22,8 @@ File structure is as follows:
    zz/ - routines for arithmetic of multiprecision integers
    fft/ - fast fourier transform convolution routines
    rand/ - routines for generating random words
+   Poly/ - routines for generic polynomials
+   parent/ - creating/handling of parent objects
 
 Performance measurements suggest that with asserts turned on (see config.h)
 the code is approximately 5-10 times slower than GMP up to operations with
