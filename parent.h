@@ -47,7 +47,24 @@ typedef parent_struct parent_t[1];
 
 *****************************************************************************/
 
+/**
+   The integer ring parent object.
+*/
 extern parent_t ZZ;
+
+/*****************************************************************************
+
+   PolyRing constructor
+
+*****************************************************************************/
+
+/**
+   Costruct the parent object corresponding to the polynomial ring
+   over the ring specified by the object base. Printing will make use
+   of the supplied string var to print the variable for polynomials
+   with this parent.
+*/
+void PolyRing(parent_t parent, parent_t base, const char * var);
 
 #endif
 
