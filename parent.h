@@ -23,10 +23,16 @@ typedef struct parent_struct
    void (* clear)(void *);
    void (* zero)(void *);
    int (* iszero)(void *);
+   void (* seti)(void *, int_t);
+   void (* setz)(void *, zz_t);
    void (* set)(void *, void *);
    void (* neg)(void *, void *);
+   void (* addi)(void *, void *, int_t);
+   void (* addz)(void *, void *, zz_t);
    void (* add)(void *, void *, void *);
    void (* sub)(void *, void *, void *);
+   void (* muli)(void *, void *, int_t);
+   void (* mulz)(void *, void *, zz_t);
    void (* mul)(void *, void *, void *);
    char * (*getstr)(void *);
    struct parent_struct * base;

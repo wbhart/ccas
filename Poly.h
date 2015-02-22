@@ -44,15 +44,9 @@ void poly_swap(Poly_t a, Poly_t b)
 {
    if (a != b)
    {
-      void * t = a->coeffs;
-      a->coeffs = b->coeffs;
-      b->coeffs = t;
-      int_t n = a->length;
-      a->length = b->length;
-      b->length = n;
-      n = a->alloc;
-      a->alloc = b->alloc;
-      b->alloc = n;
+      Poly_struct t = (*a);
+	  (*a) = (*b);
+	  (*b) = t;
    }
 }
 
@@ -68,9 +62,13 @@ void poly_neg(Poly_t a, Poly_t b);
 
 /*****************************************************************************
 
-   Zero
+   Assignment
 
 *****************************************************************************/
+
+void poly_seti(Poly_t a, int_t n);
+
+void poly_setz(Poly_t a, zz_t c);
 
 static inline
 void poly_zero(Poly_t a)
@@ -96,6 +94,18 @@ int poly_iszero(Poly_t a)
 
 *****************************************************************************/
 
+static inline
+void * poly_coeff_ptr(Poly_t pol, int_t n)
+{
+   int_t size = pol->parent->base->size;
+
+   return pol->coeffs + n*size;
+}
+
+void poly_coeff_seti(Poly_t pol, int_t n, int_t c);
+
+void poly_coeff_setz(Poly_t pol, int_t n, zz_t c);
+
 void poly_coeff_set(Poly_t pol, int_t n, void * coeff);
 
 /*****************************************************************************
@@ -109,6 +119,28 @@ void poly_add(Poly_t a, Poly_t b, Poly_t c);
 void poly_sub(Poly_t a, Poly_t b, Poly_t c);
 
 void poly_mul(Poly_t a, Poly_t b, Poly_t c);
+
+/*****************************************************************************
+
+   Ad hoc arithmetic
+
+*****************************************************************************/
+
+void poly_addi(Poly_t a, Poly_t b, int_t c);
+
+void poly_addz(Poly_t a, Poly_t b, zz_t c);
+
+void poly_muli(Poly_t a, Poly_t b, int_t c);
+
+void poly_mulz(Poly_t a, Poly_t b, zz_t c);
+
+/*****************************************************************************
+
+   Powering
+
+*****************************************************************************/
+
+void poly_pow(Poly_t a, Poly_t b, int_t n);
 
 /*****************************************************************************
 

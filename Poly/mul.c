@@ -18,6 +18,7 @@ void poly_mul(Poly_t a, Poly_t b, Poly_t c)
    void (* clear)(void *) = a->parent->base->clear;
    void (* add)(void *, void *, void *) = a->parent->base->add;
    void (* mul)(void *, void *, void *) = a->parent->base->mul;
+   int (* iszero)(void *) = a->parent->base->iszero;
    int_t size = a->parent->base->size;
    TMP_INIT;
   
