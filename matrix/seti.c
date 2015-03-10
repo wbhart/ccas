@@ -1,7 +1,7 @@
 #include "ccas.h"
 #include "matrix.h"
 
-void mat_set(Mat_t a, const Mat_t b)
+void mat_seti(Mat_t a, const Mat_t b)
 {
     if(a != b)
     {
@@ -16,7 +16,7 @@ void mat_set(Mat_t a, const Mat_t b)
         if(b->r && b->c)
             for (i = 0; i < rows; i++)
                 for(j = 0; j < cols; j++)
-                    set(a->rows[i] + (j), b->rows[i] + (j));
+                    set(a->rows[i] + j, b->rows[i] + j);
 
     }
 }

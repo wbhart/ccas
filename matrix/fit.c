@@ -2,7 +2,7 @@
 #include "matrix.h"
 
 void mat_fit(Mat_t mat, int_t len)
-{
+{/*
     if(len > mat->alloc)
     {
         void (* init)(void *, parent_t) = mat->parent->base->init;
@@ -16,6 +16,6 @@ void mat_fit(Mat_t mat, int_t len)
             init(mat->elements + i*size, mat->parent->base);
 
         mat->alloc = len;
-    }
+    }*/
 }
 
