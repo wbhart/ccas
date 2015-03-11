@@ -7,7 +7,7 @@ LIBS=-L$(CURDIR)
 QUIET_CC = @echo '  ' CC '  ' $@;
 QUIET_AR = @echo '  ' AR '  ' $@;
 
-SOURCES=$(wildcard nn/*.c) $(wildcard zz/*.c) $(wildcard rand/*.c) $(wildcard fft/*.c) $(wildcard Poly/*.c) $(wildcard parent/*.c)
+SOURCES=$(wildcard nn/*.c) $(wildcard zz/*.c) $(wildcard rand/*.c) $(wildcard fft/*.c) $(wildcard Poly/*.c) $(wildcard matrix/*.c) $(wildcard parent/*.c)
 
 HEADERS=$(wildcard *.h)
 
@@ -30,6 +30,7 @@ build:
 	mkdir -p build/rand
 	mkdir -p build/fft
 	mkdir -p build/Poly
+	mkdir -p build/matrix
 	mkdir -p build/parent
 
 libccas.a: build $(OBJS) $(HEADERS)
