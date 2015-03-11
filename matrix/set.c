@@ -13,7 +13,7 @@ void mat_set(Mat_t a, const Mat_t b)
         int_t rows = b->r;
         int_t cols = b->c;
 
-        if(b->r && b->c)
+        if((b->r)!=0 && (b->c)!=0)
             for (i = 0; i < rows; i++)
                 for(j = 0; j < cols; j++)
                     set(a->rows[i] + (j), b->rows[i] + (j));

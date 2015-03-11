@@ -3,7 +3,7 @@
 
 void mat_init(Mat_t mat, parent_t parent, int_t rows, int_t cols)
 {
-    if ((rows) && (cols))       /* Allocate space for r*c small entries */
+    if ((rows!=0) && (cols!=0))       /* Allocate space for r*c small entries */
     {
         int_t i;
         mat->entries = (void *) malloc(rows * cols * mat->parent->base->size);
